@@ -28,6 +28,7 @@ def main(stdscr):
     while True:
         window.clear()
         print_board()
+        print_leaderboard()
 
         window.addch(apple_y, apple_x, apple)
         if super_apple_chance == 1:
@@ -71,7 +72,7 @@ def main(stdscr):
     window.addstr(2, 0, 'Leave name empty to quit without saving')
     window.refresh()
 
-    name_bytes = window.getstr(1, len(name_prompt), 20)
+    name_bytes = window.getstr(1, len(name_prompt), 10)
     name = name_bytes.decode('utf-8')
 
     if name:
@@ -83,6 +84,20 @@ def print_board():
     for row in range(1, board_height + 1):
         window.addstr(start_y + row, start_x, f"|")
         window.addstr(start_y + row, start_x + board_width + 1, f"|")
+
+def print_leaderboard():
+    leaderboard_xlocation = start_x+board_width+4
+    window.addstr(0, leaderboard_xlocation, 'Leaderboard (Top 10):')
+
+    scores = []
+    with open('scoreboard.txt') as file:
+        scores = file.readlines()
+
+    for player in range(10):
+        try:
+            window.addstr(1+player, leaderboard_xlocation, f'{scores[player].split()[0]:11s}{scores[player].strip().split()[1]}')
+        except:
+            print()
 
 def move():
     global character_x, character_y
