@@ -4,7 +4,9 @@ from time import monotonic
 from random import randint
 
 def main(stdscr):
-    global window, start_x, start_y, board_height, board_width, character_x, character_y, score
+    global window, start_x, start_y, board_height, board_width, \
+        character_x, character_y, score, character, \
+        apple, super_apple, ready
 
     window = stdscr
 
@@ -12,23 +14,8 @@ def main(stdscr):
     apple = '@'
     super_apple = '$'
 
-    curses.echo()
-
     ready = ''
-    while ready != 'n' and ready != 'y':
-        window.clear()
-        window.addstr(0,0, 'Welcome to Apple Eating Game')
-        window.addstr(2,0, f'{character} = player character. controlled using wasd or ↑←↓→.')
-        window.addstr(3,0, f'{apple} = basic apple. Gives 1 point.')
-        window.addstr(4,0, f'{super_apple} = Super apple. Gives 10 points.')
-        window.addstr(5,0, 'Press q to quit any time')
-
-        ready_prompt = 'Ready to start? (y/n): '
-        window.addstr(6,0, ready_prompt)
-        window.refresh()
-
-        ready_byte = window.getstr(6, len(ready_prompt), 1)
-        ready = ready_byte.decode('utf-8')
+    starting_menu()
 
     if ready == 'n':
         return
@@ -111,6 +98,24 @@ def main(stdscr):
 
     if name:
         save_score(name, score)
+
+def starting_menu():
+    curses.echo()
+
+    while ready != 'n' and ready != 'y':
+        window.clear()
+        window.addstr(0, 0, 'Welcome to Apple Eating Game')
+        window.addstr(2, 0, f'{character} = player character. controlled using wasd or ↑←↓→.')
+        window.addstr(3, 0, f'{apple} = basic apple. Gives 1 point.')
+        window.addstr(4, 0, f'{super_apple} = Super apple. Gives 10 points.')
+        window.addstr(5, 0, 'Press q to quit any time')
+
+        ready_prompt = 'Ready to start? (y/n): '
+        window.addstr(6, 0, ready_prompt)
+        window.refresh()
+
+        ready_byte = window.getstr(6, len(ready_prompt), 1)
+        ready = ready_byte.decode('utf-8')
 
 def print_board():
     window.addstr(start_y, start_x, f"+{'-' * board_width}+")
