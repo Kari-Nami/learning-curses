@@ -10,7 +10,7 @@ def main(stdscr):
 
     window = stdscr
 
-    character = 'x'
+    character = '#'
     apple = '@'
     super_apple = '$'
 
@@ -40,6 +40,16 @@ def main(stdscr):
     super_apple_chance = 0
 
     timer = 30.0
+
+    window.clear()
+    board = create_board()
+    print_leaderboard()
+    board.addstr(apple_y, apple_x, apple)
+    board.addstr(character_y, character_x, character)
+    window.refresh()
+    board.refresh()
+
+    countdown_popup()
 
     window.clear()
     board = create_board()
@@ -100,6 +110,7 @@ def main(stdscr):
 
     timeout_popup()
 
+    curses.flushinp()
     curses.echo()
     window.nodelay(False)
     curses.curs_set(1)
@@ -142,6 +153,19 @@ def create_board():
     board.box()
     board.nodelay(True)
     return board
+
+def countdown_popup():
+    popup_width, popup_height = board_width+4, 3
+
+    popup = curses.newwin(popup_height, popup_width, 0, start_x - 1)
+    popup.box()
+    popup.nodelay(True)
+
+    for i in range(3, 0, -1):
+        countdown_text = f'Starting in {i}'
+        popup.addstr(popup_height // 2, popup_width // 2 - len(countdown_text) // 2, countdown_text)
+        popup.refresh()
+        sleep(0.5)
 
 def print_board():
     window.addstr(start_y, start_x, f"+{'-' * board_width}+")
