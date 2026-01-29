@@ -100,6 +100,7 @@ def save_score(name, score):
     scoreboard = open('scoreboard.txt', mode='a')
     scoreboard.write(f'{name}: {score}')
     scoreboard.close()
+    sort_leaderboard()
 
 def generate_apple():
     x = randint(start_x + 1, board_width + start_x)
@@ -107,5 +108,19 @@ def generate_apple():
 
     return x, y
 
+def sort_leaderboard():
+    file = open('scoreboard.txt')
+    scores = file.readlines()
+    file.close()
+
+    for i in range(len(scores)):
+        scores[i] = scores[i].split()
+        scores[i][1] = int(scores[i][1])
+
+    scores.sort(key=lambda x: x[1], reverse=True)
+
+    with open('scoreboard.txt', 'w') as file:
+        for row in scores:
+            file.write(f'{row[0]} {row[1]}\n')
 
 curses.wrapper(main)

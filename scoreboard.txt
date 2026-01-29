@@ -1,4 +1,6 @@
+winna: 66
 6969: 34
 bob: 13
 kate: 11
 haha: 2
+test: 0
