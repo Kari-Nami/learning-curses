@@ -34,13 +34,13 @@ def main(window):
             window.refresh()
             sleep(1)
             break
-        elif pressed_key == ord('w') and character_y > 0:
+        elif pressed_key == ord('w') and character_y > start_y+1:
             character_y -= 1
-        elif pressed_key == ord('r') and character_y < window_height - 1:
+        elif pressed_key == ord('r') and character_y < start_y+board_height:
             character_y += 1
-        elif pressed_key == ord('a') and character_x > 0:
+        elif pressed_key == ord('a') and character_x > start_x+1:
             character_x -= 1
-        elif pressed_key == ord('s') and character_x < window_width - 3:
+        elif pressed_key == ord('s') and character_x < start_x+board_width:
             character_x += 1
 
 
