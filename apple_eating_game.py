@@ -10,6 +10,9 @@ def main(window):
     character_x = start_x + board_width//2
     character_y = start_y + board_height//2
 
+    character = 'x'
+    apple = '@'
+
     while True:
         window.clear()
 
@@ -19,7 +22,7 @@ def main(window):
             window.addstr(start_y+row, start_x, f"|")
             window.addstr(start_y+row, start_x+board_width+1, f"|")
 
-        window.addstr(character_y, character_x, 'x')
+        window.addstr(character_y, character_x, character)
         window.refresh()
 
         window.addstr(0, 0, f"({character_x}, {character_y})")
