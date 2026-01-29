@@ -3,7 +3,7 @@ from time import sleep
 from random import randint
 
 def main(stdscr):
-    global window, start_x, start_y, board_height, board_width, character_x, character_y
+    global window, start_x, start_y, board_height, board_width, character_x, character_y, score
 
     window = stdscr
     curses.curs_set(0)
@@ -14,25 +14,22 @@ def main(stdscr):
 
     character_x = start_x + board_width//2
     character_y = start_y + board_height//2
-
     character = 'x'
-    apple = '@'
-    super_apple = '$'
     score = 0
 
     apple_x, apple_y = generate_apple()
+    apple = '@'
 
     super_apple_probability = 2
     super_apple_x, super_apple_y = 0, 0
     super_apple_chance = 0
+    super_apple = '$'
 
     while True:
         window.clear()
-
         print_board()
 
         window.addch(apple_y, apple_x, apple)
-
         if super_apple_chance == 1:
             window.addstr(super_apple_y, super_apple_x, super_apple)
 
@@ -43,13 +40,11 @@ def main(stdscr):
 
         global pressed_key
         pressed_key = window.getch()
-
         if pressed_key == ord('q'):
             window.addstr(0, 0, 'thank you for playing the game')
             window.refresh()
-            sleep(1)
+            sleep(0.5)
             break
-
         move()
 
         if character_x == apple_x and character_y == apple_y:
@@ -57,14 +52,30 @@ def main(stdscr):
             super_apple_chance = randint(1, super_apple_probability)
             if super_apple_chance == 1:
                 super_apple_x, super_apple_y = generate_apple()
-
             score += 1
-
         if character_x == super_apple_x and character_y == super_apple_y:
             apple_x, apple_y = generate_apple()
             score += 10
             super_apple_chance = 0
             super_apple_x = super_apple_y = 0
+
+    window.nodelay(False)
+    curses.echo()
+    curses.curs_set(1)
+
+    window.clear()
+
+    name_prompt = 'Enter a name to save your score: '
+    window.addstr(0, 0, f'Your Final Score: {score}')
+    window.addstr(1, 0, name_prompt)
+    window.addstr(2, 0, 'Leave name empty to quit without saving')
+    window.refresh()
+
+    name_bytes = window.getstr(1, len(name_prompt), 20)
+    name = name_bytes.decode('utf-8')
+
+    if name:
+        save_score(name, score)
 
 def print_board():
     window.addstr(start_y, start_x, f"+{'-' * board_width}+")
@@ -84,6 +95,11 @@ def move():
         character_x -= 1
     elif (pressed_key == ord('s') or pressed_key == curses.KEY_RIGHT) and character_x < start_x + board_width:
         character_x += 1
+
+def save_score(name, score):
+    scoreboard = open('scoreboard.txt', mode='a')
+    scoreboard.write(f'{name}: {score}')
+    scoreboard.close()
 
 def generate_apple():
     x = randint(start_x + 1, board_width + start_x)
