@@ -1,5 +1,6 @@
 import curses
 from time import sleep
+from time import monotonic
 from random import randint
 
 def main(stdscr):
@@ -19,7 +20,7 @@ def main(stdscr):
         window.addstr(0,0, 'Welcome to Apple Eating Game')
         window.addstr(2,0, f'{character} = player character. controlled using wasd or ↑←↓→.')
         window.addstr(3,0, f'{apple} = basic apple. Gives 1 point.')
-        window.addstr(4,0, f'{super_apple} = Super apple. Gives 10 points')
+        window.addstr(4,0, f'{super_apple} = Super apple. Gives 10 points.')
         window.addstr(5,0, 'Press q to quit any time')
 
         ready_prompt = 'Ready to start? (y/n): '
@@ -35,8 +36,9 @@ def main(stdscr):
     curses.curs_set(0)
     window.keypad(True)
     curses.noecho()
+    window.nodelay(True)
 
-    start_x, start_y = 2, 2
+    start_x, start_y = 2, 3
     board_width, board_height = 16, 8
 
     character_x = start_x + board_width//2
@@ -49,7 +51,14 @@ def main(stdscr):
     super_apple_x, super_apple_y = 0, 0
     super_apple_chance = 0
 
-    while True:
+    timer = 30.0
+    previous_time = monotonic()
+    while timer > 0:
+        current_time = monotonic()
+        time_difference = current_time - previous_time
+        previous_time = current_time
+        timer -= time_difference
+
         window.clear()
         print_board()
         print_leaderboard()
@@ -62,6 +71,7 @@ def main(stdscr):
         window.refresh()
 
         window.addstr(0, 0, f"Your Score: {score}")
+        window.addstr(1, 0, f'Remaining Time: {timer: .2f}')
 
         global pressed_key
         pressed_key = window.getch()
@@ -111,7 +121,7 @@ def print_board():
 
 def print_leaderboard():
     leaderboard_xlocation = start_x+board_width+4
-    window.addstr(0, leaderboard_xlocation, 'Leaderboard (Top 10):')
+    window.addstr(start_y, leaderboard_xlocation, 'Leaderboard (Top 10):')
 
     scores = []
     with open('scoreboard.txt') as file:
@@ -119,7 +129,7 @@ def print_leaderboard():
 
     for player in range(10):
         try:
-            window.addstr(1+player, leaderboard_xlocation, f'{scores[player].split()[0]:11s}{scores[player].strip().split()[1]}')
+            window.addstr(start_y+1+player, leaderboard_xlocation, f'{scores[player].split()[0]:11s}{scores[player].strip().split()[1]}')
         except:
             print()
 
