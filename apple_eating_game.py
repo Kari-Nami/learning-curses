@@ -18,8 +18,8 @@ def main(stdscr):
         window.clear()
         window.addstr(0,0, 'Welcome to Apple Eating Game')
         window.addstr(2,0, f'{character} = player character. controlled using wasd or ↑←↓→.')
-        window.addstr(3,0, f'{apple} = basic apple. gives 1 point.')
-        window.addstr(4,0, f'{super_apple} = Super apple. Has a chance to appear when an apple is eaten. Gives 10 points')
+        window.addstr(3,0, f'{apple} = basic apple. Gives 1 point.')
+        window.addstr(4,0, f'{super_apple} = Super apple. Gives 10 points')
         window.addstr(5,0, 'Press q to quit any time')
 
         ready_prompt = 'Ready to start? (y/n): '
