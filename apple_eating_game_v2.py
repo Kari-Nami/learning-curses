@@ -152,6 +152,7 @@ def create_board():
     board = curses.newwin(board_height+2, board_width+2, start_y, start_x)
     board.box()
     board.nodelay(True)
+    board.keypad(True)
     return board
 
 def countdown_popup():
@@ -195,11 +196,11 @@ def move():
 
     if (pressed_key == ord('w') or pressed_key == curses.KEY_UP) and character_y > 1:
         character_y -= 1
-    elif (pressed_key == ord('r') or pressed_key == curses.KEY_DOWN) and character_y < board_height:
+    elif (pressed_key == ord('s') or pressed_key == curses.KEY_DOWN) and character_y < board_height:
         character_y += 1
     elif (pressed_key == ord('a') or pressed_key == curses.KEY_LEFT) and character_x > 1:
         character_x -= 2
-    elif (pressed_key == ord('s') or pressed_key == curses.KEY_RIGHT) and character_x < board_width:
+    elif (pressed_key == ord('d') or pressed_key == curses.KEY_RIGHT) and character_x < board_width:
         character_x += 2
 
 def save_score(name, score):
