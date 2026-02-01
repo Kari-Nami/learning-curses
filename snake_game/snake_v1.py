@@ -5,7 +5,8 @@ def main(window):
     curses.start_color()
     curses.use_default_colors()
 
-    curses.init_pair(1, curses.COLOR_MAGENTA, 0)
+    curses.init_pair(1, curses.COLOR_MAGENTA, -1)
+    curses.init_pair(2, 237, -1)
 
     window = window
 
@@ -29,7 +30,11 @@ def main(window):
     board.box()
 
     board.addstr(player_y, player_x, player, curses.color_pair(1))
-    for i in range(1, board_w*2-1): board.addstr(0, i, f'{i}')
+
+    for i in range(1, board_h-1):
+        for j in range(1, board_w * 2 - 1):
+            if j % 2 == 0: board.addstr(i, j, ".", curses.color_pair(2))
+
     board.refresh()
     while True:
         window.addstr(0, 0, f'rotation: {current_rotation} ')
