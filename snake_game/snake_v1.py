@@ -40,15 +40,25 @@ def main(window):
         if key == ord('q'):
             return
 
+        # r = reset
+        if key == ord('p'):
+            player_x, player_y = board_w-1, board_h//2
+            current_rotation = -1
+            snake_length = 1
+
+        # w
         elif key == ord('w') and player_y>1:
             current_rotation = 0
 
+        # d
         elif key == ord('s') and player_x<board_w*2-3:
             current_rotation = 1
 
+        # s
         elif key == ord('r') and player_y<board_h-2:
             current_rotation = 2
 
+        # a
         elif key == ord('a') and player_x>1:
             current_rotation = 3
 
