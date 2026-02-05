@@ -58,7 +58,7 @@ def main(window):
         # curses.napms(1500)
         # return
 
-        if player_x < 1 or player_x >= board_w*2-2:
+        if (player_x < 1 or player_x >= board_w*2-2) or (player_y < 1 or player_y >= board_h-1):
             board.addstr(0, 0, 'death')
             board.refresh()
 
