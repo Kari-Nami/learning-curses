@@ -1,4 +1,6 @@
 import curses
+from time import sleep
+
 def main(window):
     global board_h, board_w, board
 
@@ -46,18 +48,25 @@ def main(window):
             snake_length = 1
 
             board.clear()
+            board.box()
             background_dots()
 
         if current_rotation != -1:
-            pass
+            player_x, player_y = player_x + directions[current_rotation][0], player_y + directions[current_rotation][1]
 
-        # board.addstr(0, 0, 'death')
         # board.refresh()
         # curses.napms(1500)
         # return
 
+        if player_x < 1 or player_x >= board_w*2-2:
+            board.addstr(0, 0, 'death')
+            board.refresh()
+
+            sleep(2)
+            return
+
+        board.addstr(player_y, player_x, player, curses.color_pair(1))
         window.addstr(0, 0, f'{(player_x, player_y)},  rotation: {current_rotation}, flag: ')
-        # board.addstr(player_y, player_x, ' ·', curses.color_pair(2))
 
         window.refresh()
         board.refresh()
