@@ -39,7 +39,7 @@ def main(stdscr):
         game.addstr(cat_y+2, cat_x, cat.splitlines()[2])
 
         key = game.getch()
-        if key == ord('q'):
+        if key != -1:
             return
 
         game.addstr(cat_y+1, cat_x, z)
